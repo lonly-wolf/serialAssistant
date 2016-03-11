@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>FBT.png</file>
+        <file>FBT2.png</file>
+    </qresource>
+</RCC>
