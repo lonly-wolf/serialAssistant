@@ -9,6 +9,7 @@ QT       += core gui
 QT       += widgets
 
 QT       +=serialport
+QT       +=network
 
 TARGET = QtDebugAssistant
 TEMPLATE = app

@@ -9,7 +9,10 @@
 #include<QTimer>
 #include<QByteArray>
 #include<QChar>
-
+#include<QtNetwork/QTcpServer>
+#include<QtNetwork/QTcpSocket>
+#include<QAbstractState>
+#include<QHostInfo>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -19,15 +22,16 @@ MainWindow::MainWindow(QWidget *parent) :
     timer=new QTimer(this);//构造函数
     sendTimer=new QTimer(this);
     mySerialPort=new QSerialPort();
+    tcpServer=new QTcpServer(this);
+    tcpSocket=new QTcpSocket(this);
 
     QObject::connect(timer,SIGNAL(timeout()),this,SLOT(updateMyData()));
     QObject::connect(sendTimer,SIGNAL(timeout()),this,SLOT(on_pushButton_2_clicked()));
-   // QObject::connect(ui->label_9,SIGNAL(clicked()),this,SLOT(toWeb(ui->label_9->text()));
-
-
+    QObject::connect(tcpServer,SIGNAL(newConnection()),this,SLOT(acceptConnections()));
     ui->label_9->setOpenExternalLinks(true);
     ui->label_9->setTextFormat(Qt::RichText);
     ui->comboBox_3->setCurrentIndex(3);
+
     QObject::connect(ui->action_2,SIGNAL(triggered(bool)),this,SLOT(MainWindow::on_action_2_triggered())); //添加串口事件
     QObject::connect(ui->action_5,SIGNAL(triggered(bool)),this,SLOT(MainWindow::on_action_5_triggered()));//添加波特率事件
     foreach (const QSerialPortInfo &info,QSerialPortInfo::availablePorts()) {
@@ -48,7 +52,8 @@ MainWindow::~MainWindow()
     delete timer;
     delete sendTimer;
     delete mySerialPort;
-
+    delete tcpServer;
+    delete tcpSocket;
 }
 
 //打开/关闭 串口
@@ -110,10 +115,23 @@ void MainWindow::on_pushButton_clicked()
           }
          timer->start(1000);
     }
-    else{
+    else if(ui->pushButton->text().compare(u8"关闭串口")==0){
          ui->pushButton->setText(QStringLiteral("打开串口"));
          mySerialPort->close();
          timer->stop();
+
+
+    }
+    else if(ui->pushButton->text().compare(u8"打开网口")==0){
+         ui->pushButton->setText(QStringLiteral("关闭网口"));
+         newListen(); //开始进行端口监听
+
+
+    }
+    else if(ui->pushButton->text().compare(u8"关闭网口")==0){
+         ui->pushButton->setText(QStringLiteral("打开网口"));
+         //mySerialPort->close();
+         //timer->stop();
 
 
     }
@@ -132,12 +150,10 @@ void MainWindow::on_pushButton_2_clicked()
 {
     QByteArray sendTxt=ui->plainTextEdit_2->toPlainText().toLocal8Bit();
     //设置发送字节
+    if(currentMode==0){
     currentSend=ui->label_11->text().toInt();
     sendBytes=currentSend + sendTxt.size();
     ui->label_11->setText(QString::number(sendBytes,10));
-
-
-   //QMessageBox::warning(this,tr("you will send this"),tr(sendTxt.toLatin1()),QMessageBox::Ok);
     //发送十六进制数据
     if(ui->checkBox->isChecked()){
         mySerialPort->write(QByteArray::fromHex(sendTxt));
@@ -157,9 +173,18 @@ void MainWindow::on_pushButton_2_clicked()
     else{
         sendTimer->stop();
     }
+}
+    else if(currentMode==1){
+    //发送十六进制数据
+    if(ui->checkBox->isChecked()){
+        tcpSocket->write(QByteArray::fromHex(sendTxt));
+    }
+    //发送字符
+    else{
 
-
-
+       tcpSocket->write(sendTxt);
+    }
+    }
 }
 
 
@@ -293,3 +318,92 @@ void MainWindow::on_label_9_linkActivated(const QString &link)
     QMessageBox::warning(this,tr("this is a test"),tr("this is a Label Event"),QMessageBox::Ok);
 
 }
+//串口网口切换函数
+void MainWindow::on_tabWidget_currentChanged(int index)
+{
+    if(index==0){
+        currentMode=0;
+        if(mySerialPort->isOpen())
+            ui->pushButton->setText(u8"关闭串口");
+        else
+            ui->pushButton->setText(u8"打开串口");
+    }
+    else if(index==1){
+        currentMode=1;
+        //在次加入对网口的if判断 从而确定汉字的内容
+        ui->pushButton->setText(u8"打开网口");
+    }
+}
+//建立TCP监听事件（服务器端）
+void MainWindow::newListen()
+{
+    //创建服务器端
+    if(ui->radioButton_4->isChecked()){
+        bool ok=false;
+
+        QHostInfo myInfo=QHostInfo::fromName("localhost");
+        foreach (QHostAddress address, myInfo.addresses()) {
+            if(address.protocol()==QAbstractSocket::IPv4Protocol){
+                ui->textEdit->setText(address.toString());
+                ui->textEdit->setEnabled(false);
+            }
+
+        }
+        QString serverIP=QHostAddress::LocalHost;
+        qDebug()<<serverIP;
+        if(!tcpServer->listen(QHostAddress::Any,ui->textEdit_2->toPlainText().toInt(&ok,10))){
+            qDebug()<<tcpServer->errorString();
+            tcpServer->close();
+            return;
+        }
+
+    }
+
+    /*
+    if(ui->radioButton_3->isChecked()){
+        bool ok=false;
+        QHostAddress inputAddr;
+
+        QString temp=ui->textEdit->toPlainText().toLatin1();
+        qDebug()<<temp;
+        inputAddr.setAddress(temp);
+        if(!tcpServer->listen(inputAddr,ui->textEdit_2->toPlainText().toInt(&ok,10))){
+            qDebug()<<tcpServer->errorString();
+            tcpServer->close();
+            return;
+        }
+
+    }
+    */
+
+
+
+}
+//接受客户端的连接
+void MainWindow::acceptConnections()
+{
+    tcpSocket=tcpServer->nextPendingConnection();
+
+}
+
+void MainWindow::on_radioButton_4_clicked(bool checked)
+{
+    ui->textEdit->setEnabled(false);
+    QHostInfo myInfo=QHostInfo::fromName(QHostInfo::localHostName());
+    foreach (QHostAddress address, myInfo.addresses()) {
+         qDebug()<<address.toString();
+        if(address.protocol()==QAbstractSocket::IPv4Protocol){
+            qDebug()<<address.toString();
+            ui->textEdit->setText(address.toString());
+            ui->textEdit->setEnabled(false);
+        }
+
+    }
+
+}
+
+void MainWindow::on_radioButton_3_clicked(bool checked)
+{
+     ui->textEdit->setEnabled(true);
+}
+
