@@ -13,6 +13,8 @@
 #include<QtNetwork/QTcpSocket>
 #include<QAbstractState>
 #include<QHostInfo>
+#include<QRegularExpression>
+#include<QRegularExpressionMatch>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -27,7 +29,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QObject::connect(timer,SIGNAL(timeout()),this,SLOT(updateMyData()));
     QObject::connect(sendTimer,SIGNAL(timeout()),this,SLOT(on_pushButton_2_clicked()));
-    QObject::connect(tcpServer,SIGNAL(newConnection()),this,SLOT(acceptConnections()));
+    QObject::connect(tcpServer,SIGNAL(newConnection()),this,SLOT(acceptConnections()));//服务器 端出现新的连接请求便出发acceptConnection()事件
+    QObject::connect(tcpSocket,SIGNAL(readyRead()),this,SLOT(recData()));//客户端 收到服务器发送的数据后 执行recData()函数
+
+
     ui->label_9->setOpenExternalLinks(true);
     ui->label_9->setTextFormat(Qt::RichText);
     ui->comboBox_3->setCurrentIndex(3);
@@ -124,12 +129,37 @@ void MainWindow::on_pushButton_clicked()
     }
     else if(ui->pushButton->text().compare(u8"打开网口")==0){
          ui->pushButton->setText(QStringLiteral("关闭网口"));
-         newListen(); //开始进行端口监听
+         ui->radioButton_3->setEnabled(false);
+         ui->radioButton_4->setEnabled(false);
+         if(createClient){
+             addNewTcpConnect();//创建客户端的连接
+
+         }
+         else if(createServer){
+             newListen(); //开始进行端口监听
+             ui->statusBar->showMessage(u8"服务器创建成功");
+
+         }
+
 
 
     }
     else if(ui->pushButton->text().compare(u8"关闭网口")==0){
          ui->pushButton->setText(QStringLiteral("打开网口"));
+         ui->radioButton_3->setEnabled(true);
+         ui->radioButton_4->setEnabled(true);
+         if(createClient){
+             tcpSocket->close();
+             ui->statusBar->showMessage(u8"客户端已关闭");
+
+
+         }
+         else if(createServer){
+             tcpServer->close();
+             ui->statusBar->showMessage(u8"服务器已关闭");
+
+
+         }
          //mySerialPort->close();
          //timer->stop();
 
@@ -330,8 +360,12 @@ void MainWindow::on_tabWidget_currentChanged(int index)
     }
     else if(index==1){
         currentMode=1;
+        on_radioButton_3_clicked(true);
         //在次加入对网口的if判断 从而确定汉字的内容
-        ui->pushButton->setText(u8"打开网口");
+        if(tcpServer->isListening() || tcpSocket->isOpen())
+            ui->pushButton->setText(u8"关闭网口");
+        else
+            ui->pushButton->setText(u8"打开网口");
     }
 }
 //建立TCP监听事件（服务器端）
@@ -340,70 +374,80 @@ void MainWindow::newListen()
     //创建服务器端
     if(ui->radioButton_4->isChecked()){
         bool ok=false;
-
-        QHostInfo myInfo=QHostInfo::fromName("localhost");
-        foreach (QHostAddress address, myInfo.addresses()) {
-            if(address.protocol()==QAbstractSocket::IPv4Protocol){
-                ui->textEdit->setText(address.toString());
-                ui->textEdit->setEnabled(false);
-            }
-
-        }
-        QString serverIP=QHostAddress::LocalHost;
-        qDebug()<<serverIP;
         if(!tcpServer->listen(QHostAddress::Any,ui->textEdit_2->toPlainText().toInt(&ok,10))){
             qDebug()<<tcpServer->errorString();
             tcpServer->close();
             return;
         }
+          ui->statusBar->showMessage(u8"成功创建服务器");
 
     }
-
-    /*
-    if(ui->radioButton_3->isChecked()){
-        bool ok=false;
-        QHostAddress inputAddr;
-
-        QString temp=ui->textEdit->toPlainText().toLatin1();
-        qDebug()<<temp;
-        inputAddr.setAddress(temp);
-        if(!tcpServer->listen(inputAddr,ui->textEdit_2->toPlainText().toInt(&ok,10))){
-            qDebug()<<tcpServer->errorString();
-            tcpServer->close();
-            return;
-        }
-
-    }
-    */
 
 
 
 }
-//接受客户端的连接
+//服务器接受客户端的连接
 void MainWindow::acceptConnections()
 {
     tcpSocket=tcpServer->nextPendingConnection();
 
 }
-
+//创建服务器------
 void MainWindow::on_radioButton_4_clicked(bool checked)
 {
-    ui->textEdit->setEnabled(false);
+    createClient=false;
+    createServer=true;
+    ui->comboBox_6->clear();
+
     QHostInfo myInfo=QHostInfo::fromName(QHostInfo::localHostName());
     foreach (QHostAddress address, myInfo.addresses()) {
-         qDebug()<<address.toString();
         if(address.protocol()==QAbstractSocket::IPv4Protocol){
-            qDebug()<<address.toString();
-            ui->textEdit->setText(address.toString());
-            ui->textEdit->setEnabled(false);
+            ui->comboBox_6->addItem(address.toString());
         }
 
     }
 
-}
 
+}
+//创建客户端------
 void MainWindow::on_radioButton_3_clicked(bool checked)
 {
-     ui->textEdit->setEnabled(true);
+    createClient=true;
+    createServer=false;
+    ui->comboBox_6->clear();
+    ui->comboBox_6->setEditable(true);
+    QRegularExpression re("(\\d{1,3}\\.){3}");
+    QRegularExpressionMatch ipMatch;
+    QRegularExpressionMatchIterator ipIterator;
+    QHostInfo myInfo=QHostInfo::fromName(QHostInfo::localHostName());
+    foreach (QHostAddress address, myInfo.addresses()) {
+        if(address.protocol()==QAbstractSocket::IPv4Protocol){
+            ipIterator=re.globalMatch(address.toString());
+            while(ipIterator.hasNext()){
+                ipMatch=ipIterator.next();
+                ui->comboBox_6->addItem(ipMatch.captured(0));
+            }
+
+
+        }
+    }
+}
+
+//客户端接收服务器数据
+void MainWindow::recData()
+{
+
+    QString recData=tcpSocket->readAll();
+    ui->plainTextEdit->insertPlainText(recData);
+
+}
+
+//客户端新建连接
+void MainWindow::addNewTcpConnect()
+{
+    bool ok=false;
+    tcpSocket->abort();
+    tcpSocket->connectToHost(ui->comboBox_6->currentText(),ui->textEdit_2->toPlainText().toInt(&ok,10));
+    ui->statusBar->showMessage(u8"客户端创建成功");
 }
 

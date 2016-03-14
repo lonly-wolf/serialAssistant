@@ -23,7 +23,8 @@ public:
     int hex2int(char c);//十六进制转换为Ascii码
     char int2hex(int i);//Ascii码转换为十六进制
     void delBlank(QString &str); //去除空格函数
-    void toWeb(QString myUrl);
+    void toWeb(QString myUrl);   //跳转到网站的超链接
+    void addNewTcpConnect();    //客户端 添加新的连接
 
 private slots:
     void on_pushButton_clicked();//打开/关闭 串口
@@ -37,8 +38,11 @@ private slots:
     void updateMyData();//刷新数据
     void on_label_9_linkActivated(const QString &link); //超链接事件
     void on_tabWidget_currentChanged(int index); //串口、网口转换
-    void newListen(); //添加TCP的监听事件
-    void acceptConnections(); //接受客户端的连接
+
+    void newListen(); //服务器端 添加TCP的监听事件
+    void acceptConnections(); //服务器端 接受客户端的连接
+
+    void recData(); //客户端 接收服务器发来的数据
 
 
     void on_radioButton_4_clicked(bool checked);
@@ -61,6 +65,8 @@ private:
     QString lastState=u8"打开网口";//用来记录当前串口、网口状态。
     QTcpServer *tcpServer;
     QTcpSocket *tcpSocket;
+    bool createClient=true;//默认创建客户端为true
+    bool createServer=false;
 
 };
 
