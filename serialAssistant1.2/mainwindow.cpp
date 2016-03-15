@@ -48,6 +48,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(tcpSocket,SIGNAL(disconnected()),this,SLOT(disconnectHost()));//主机下线提示
     connect(tcpSocket,SIGNAL(connected()),this,SLOT(connectHost()));//主机上线提示
 
+    lastState=QStringLiteral("打开网口");
     createClient=true;
     ui->label_9->setOpenExternalLinks(true);
     ui->label_9->setTextFormat(Qt::RichText);

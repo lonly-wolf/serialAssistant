@@ -62,7 +62,7 @@ private:
     qint32 currentSend;
     qint32 currentReceive;
     qint8 currentMode;//当前模式
-    QString lastState=u8"打开网口";//用来记录当前串口、网口状态。
+    QString lastState;//用来记录当前串口、网口状态。
     QTcpServer *tcpServer;
     QTcpSocket *tcpSocket;
     bool createClient;//默认创建客户端为true
