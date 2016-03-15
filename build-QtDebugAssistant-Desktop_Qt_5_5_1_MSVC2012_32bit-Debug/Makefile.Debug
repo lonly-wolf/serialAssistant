@@ -795,7 +795,60 @@ debug\aboutDialog.obj: ..\serialAssistant1.2\aboutDialog.cpp ../serialAssistant1
 		C:\Qt5\5.5\msvc2012\include\QtCore\qfiledevice.h \
 		C:\Qt5\5.5\msvc2012\include\QtGui\qvector2d.h \
 		C:\Qt5\5.5\msvc2012\include\QtGui\qtouchdevice.h \
-		ui_aboutDialog.h
+		ui_aboutDialog.h \
+		C:\Qt5\5.5\msvc2012\include\QtCore\QVariant \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\QAction \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qaction.h \
+		C:\Qt5\5.5\msvc2012\include\QtGui\qicon.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qactiongroup.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\QApplication \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qapplication.h \
+		C:\Qt5\5.5\msvc2012\include\QtCore\qcoreapplication.h \
+		C:\Qt5\5.5\msvc2012\include\QtCore\qeventloop.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qdesktopwidget.h \
+		C:\Qt5\5.5\msvc2012\include\QtGui\qguiapplication.h \
+		C:\Qt5\5.5\msvc2012\include\QtGui\qinputmethod.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\QButtonGroup \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qbuttongroup.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\QFormLayout \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qformlayout.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\QLayout \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qlayout.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qlayoutitem.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qboxlayout.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qgridlayout.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\QGroupBox \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qgroupbox.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qframe.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\QHBoxLayout \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\QHeaderView \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qheaderview.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qabstractitemview.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qabstractscrollarea.h \
+		C:\Qt5\5.5\msvc2012\include\QtCore\qabstractitemmodel.h \
+		C:\Qt5\5.5\msvc2012\include\QtCore\qitemselectionmodel.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qabstractitemdelegate.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qstyleoption.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qabstractspinbox.h \
+		C:\Qt5\5.5\msvc2012\include\QtGui\qvalidator.h \
+		C:\Qt5\5.5\msvc2012\include\QtCore\qregularexpression.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qslider.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qabstractslider.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qstyle.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qtabbar.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qtabwidget.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qrubberband.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\QLabel \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qlabel.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\QSpacerItem \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\QTextBrowser \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qtextbrowser.h \
+		C:\Qt5\5.5\msvc2012\include\QtWidgets\qtextedit.h \
+		C:\Qt5\5.5\msvc2012\include\QtGui\qtextdocument.h \
+		C:\Qt5\5.5\msvc2012\include\QtGui\qtextoption.h \
+		C:\Qt5\5.5\msvc2012\include\QtGui\qtextcursor.h \
+		C:\Qt5\5.5\msvc2012\include\QtGui\qtextformat.h \
+		C:\Qt5\5.5\msvc2012\include\QtGui\qpen.h
 
 debug\qrc_images.obj: debug\qrc_images.cpp 
 

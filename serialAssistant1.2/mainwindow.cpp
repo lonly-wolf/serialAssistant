@@ -248,7 +248,7 @@ void MainWindow::on_clearData_clicked()
 //保收发数据 ok
 void  MainWindow::on_saveData_clicked()
 {
-    QString saveText=QFileDialog::getSaveFileName(this,tr("保存收发信息"),"../dataStore.txt","Text files(*.txt)");
+    QString saveText=QFileDialog::getSaveFileName(this,QStringLiteral("保存收发信息"),"../dataStore.txt","Text files(*.txt)");
     ui->statusBar->showMessage(saveText); //statusBar的方式提示保存路径
     QString sendText=ui->sendContext->toPlainText(); //转化为QString格式 toPlainText()
     QString receiveText=ui->receiveContext->toPlainText();
