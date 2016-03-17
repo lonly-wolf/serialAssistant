@@ -4,6 +4,8 @@
 #include <QMainWindow>
 class QPainter;
 
+class QLabel;
+
 namespace Ui {
 class MainWindow;
 }
@@ -19,9 +21,17 @@ public:
 private:
     Ui::MainWindow *ui;
     QPainter *painter;
-    void drawPaint();
+    QImage  *myImage;//图片
+    QLabel *labelWidget;//放置图片的label
+    QString imageName;//图片路径
 
+    void drawPaint(); //绘制图形（测试版）
+    void transformImage();// 调整图像位置 大小
+private slots:
+    void on_actionOpen_triggered(); //菜单栏打开图片
+   //图片旋转
 
+    void on_imageRotate_sliderMoved(int position);
 
 protected:
     void paintEvent(QPaintEvent *event);

@@ -6,20 +6,104 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>799</width>
-    <height>420</height>
+    <width>1307</width>
+    <height>738</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralWidget"/>
+  <property name="windowIcon">
+   <iconset resource="images.qrc">
+    <normaloff>:/image2.png</normaloff>:/image2.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="minimumSize">
+       <size>
+        <width>1251</width>
+        <height>521</height>
+       </size>
+      </property>
+      <property name="acceptDrops">
+       <bool>true</bool>
+      </property>
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>1287</width>
+         <height>575</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QGroupBox" name="toolsBox">
+      <property name="minimumSize">
+       <size>
+        <width>1261</width>
+        <height>80</height>
+       </size>
+      </property>
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
+      <property name="title">
+       <string>工具栏</string>
+      </property>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>590</x>
+         <y>0</y>
+         <width>71</width>
+         <height>71</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QDial" name="imageRotate">
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>64</height>
+           </size>
+          </property>
+          <property name="maximum">
+           <number>360</number>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string> rotate:0</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>799</width>
+     <width>1307</width>
      <height>23</height>
     </rect>
    </property>
@@ -27,12 +111,15 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
-    <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSave_as"/>
+    <addaction name="action_Outport"/>
+    <addaction name="action_Print"/>
    </widget>
    <widget class="QMenu" name="menu_Operate">
     <property name="title">
-     <string>&amp;Operate</string>
+     <string>&amp;Edit</string>
     </property>
    </widget>
    <widget class="QMenu" name="menu_About">
@@ -63,8 +150,30 @@
     <string>Open</string>
    </property>
   </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>&amp;Save</string>
+   </property>
+  </action>
+  <action name="actionSave_as">
+   <property name="text">
+    <string>Save &amp;as</string>
+   </property>
+  </action>
+  <action name="action_Outport">
+   <property name="text">
+    <string>&amp;Outport</string>
+   </property>
+  </action>
+  <action name="action_Print">
+   <property name="text">
+    <string>&amp;Print</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections/>
 </ui>
