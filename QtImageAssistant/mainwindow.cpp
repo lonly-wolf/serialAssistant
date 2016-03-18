@@ -12,23 +12,24 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 
     ui->setupUi(this);
-    myImage=new QImage;
     labelWidget=new QLabel;
-    painter=new QPainter(this);
+    myImage2=new QImage;
+    painter=new QPainter;
     //设置scrollerArea的滚动条策略
     ui->scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    ui->scrollArea->setAlignment(Qt::AlignCenter);
-    //设置scrollerArea中的内容居中
-    labelWidget->setContentsMargins(ui->scrollArea->width()/2- myImage->width()/2,ui->scrollArea->height()/2-myImage->height()/2,ui->scrollArea->width()/2- myImage->width()/2,ui->scrollArea->height()/2-myImage->height()/2);
+    labelWidget->setAlignment(Qt::AlignCenter);
     ui->scrollArea->setWidget(labelWidget);
+    picSize=1;
+    picPosition=0;
+    hasTrans=false;
+
 
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete myImage;
     delete labelWidget;
     delete painter;
 }
@@ -87,13 +88,10 @@ void MainWindow::drawPaint()
 void MainWindow::transformImage()
 {   QPainter myPainter;
     QImage image(":525897.png");
-
     myPainter.begin(&image);
-
     QPen pen(Qt::blue,1,Qt::DashLine);
     myPainter.setPen(pen);
     myPainter.drawRect(50,50,100,100);
-
    QTransform transform;
    transform.translate(50,50); //改变坐标
    transform.rotate(45);       //旋转
@@ -108,6 +106,20 @@ void MainWindow::transformImage()
    //ui->label->setPixmap(QPixmap::fromImage(image));
    //在scrollArea添加label图片
 
+   // painter->begin(&myImage);
+    //transform.rotate(position);
+  // painter->setTransform(transform);
+  // painter->translate(centerX,centerY);
+   //QRectF rect(ui->scrollArea->width()/2,ui->scrollArea->height()/2,myImage.width(),myImage.height());
+
+  // labelWidget->clear();
+  // labelWidget->show();
+
+  // painter->drawImage(0,0,myImage);
+  // labelWidget->resize(myImage.width(),myImage.height());
+
+ //  painter->end();
+
 
 
 }
@@ -115,8 +127,10 @@ void MainWindow::transformImage()
 void MainWindow::paintEvent(QPaintEvent *event)
 {
     //drawPaint();
-   //transformImage();
+  // transformImage();
     qDebug()<<"paintEvent loaded!";
+
+
 
 }
 
@@ -126,15 +140,19 @@ void MainWindow::on_actionOpen_triggered()
 {
   imageName=QFileDialog::getOpenFileName(this,QStringLiteral("Please open a picture"),"","Images (*.png *.bmp *.jpg *.tif *.GIF)");
   if(!imageName.isEmpty()){
-      if(!(myImage->load(imageName))){
+      if(!(myImage.load(imageName))){
           QMessageBox::warning(this,"Falied to open the picture","Fail to open the picture",QMessageBox::Ok);
           return;
       }
       else{
-          labelWidget->setPixmap(QPixmap::fromImage(*myImage));
+          *myImage2=myImage; //将加载的图片信息拷贝给myImage2
+          imageWidth=myImage2->width();
+          imageHeight=myImage2->height();
+          labelWidget->setPixmap(QPixmap::fromImage(myImage));
           qDebug()<<"myImage loaded2";
-          labelWidget->setContentsMargins(ui->scrollArea->width()/2- myImage->width()/2,ui->scrollArea->height()/2-myImage->height()/2,ui->scrollArea->width()/2- myImage->width()/2,ui->scrollArea->height()/2-myImage->height()/2);
+         // labelWidget->setContentsMargins(ui->scrollArea->width()/2- myImage2->width()/2,ui->scrollArea->height()/2-myImage2->height()/2,ui->scrollArea->width()/2- myImage2->width()/2,ui->scrollArea->height()/2-myImage2->height()/2);
           qDebug()<<"myImage loaded3";
+
           ui->scrollArea->setWidget(labelWidget);
           return;
       }
@@ -148,7 +166,75 @@ void MainWindow::on_actionOpen_triggered()
 //旋转图片
 void MainWindow::on_imageRotate_sliderMoved(int position)
 {
+    picPosition=position;
+    if(!myImage.isNull()){
+         hasTrans=true;
+        qDebug()<<position;
+        ui->label->setText("rotate:" + QString::number(position,10));
+        matrix.rotate(position/12);
+        *myImage2=myImage.transformed(matrix);
+        *myImage2=myImage2->scaled(imageWidth,imageHeight,Qt::KeepAspectRatio);
+        labelWidget->setPixmap(QPixmap::fromImage(*myImage2));
+    }
+    else{
+        return;
+    }
+}
+
+//放大图片
+void MainWindow::on_pushButton_clicked()
+{
+
+if(!myImage.isNull()){
+     if(myImage2->width()<=8192 && (myImage2->height())<=8192){
+         if(hasTrans){
+             matrix.rotate(picPosition-picPosition);
+             myImage=myImage.transformed(matrix);
+         }
+        *myImage2=myImage.scaled(myImage2->width()/0.8,myImage2->height()/0.8,Qt::KeepAspectRatio);
+         //labelWidget->setContentsMargins(ui->scrollArea->width()/2- myImage2->width()/2,ui->scrollArea->height()/2-myImage2->height()/2,ui->scrollArea->width()/2- myImage2->width()/2,ui->scrollArea->height()/2-myImage2->height()/2);
+         labelWidget->setPixmap(QPixmap::fromImage(*myImage2));
+         imageWidth=myImage2->width();
+         imageHeight=myImage2->height();
+         hasTrans=false;
+
+     }
+}
+}
+
+// 缩小图片
+void MainWindow::on_pushButton_2_clicked()
+{
+   // myImage=*myImage2;
+    if(!myImage.isNull()){
+        if(myImage2->width()>=30 && myImage2->height()>=30){
+            if(hasTrans){
+                matrix.rotate(picPosition-picPosition);
+                myImage=myImage.transformed(matrix);
+               // labelWidget->setPixmap(QPixmap::fromImage(*myImage2));
+            }
+           *myImage2=myImage.scaled(myImage2->width()/1.3,myImage2->height()/1.3,Qt::KeepAspectRatio);//设置无损缩放
+          // labelWidget->setContentsMargins(ui->scrollArea->width()/2- myImage2->width()/2,ui->scrollArea->height()/2-myImage2->height()/2,ui->scrollArea->width()/2- myImage2->width()/2,ui->scrollArea->height()/2-myImage2->height()/2);
+            labelWidget->setPixmap(QPixmap::fromImage(*myImage2));
+            imageWidth=myImage2->width();
+            imageHeight=myImage2->height();
+           //myImage=*myImage2;
+            hasTrans=false;
+
+        }
+    }
+
+}
+
+void MainWindow::on_horizontalSlider_sliderMoved(int position)
+{
     qDebug()<<position;
-    ui->label->setText("rotate:" + QString::number(position,10));
+    if(position>5){
+        on_pushButton_clicked();
+    }
+    else if(position<5){
+        on_pushButton_2_clicked();
+
+    }
 
 }

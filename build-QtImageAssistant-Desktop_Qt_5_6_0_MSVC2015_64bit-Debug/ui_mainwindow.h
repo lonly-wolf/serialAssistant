@@ -21,7 +21,9 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QScrollArea>
+#include <QtWidgets/QSlider>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QVBoxLayout>
@@ -47,6 +49,12 @@ public:
     QVBoxLayout *verticalLayout;
     QDial *imageRotate;
     QLabel *label;
+    QPushButton *pushButton;
+    QPushButton *pushButton_2;
+    QSlider *horizontalSlider;
+    QLabel *label_2;
+    QLabel *label_3;
+    QLabel *label_4;
     QMenuBar *menuBar;
     QMenu *menu_f;
     QMenu *menu_Operate;
@@ -96,6 +104,7 @@ public:
         toolsBox = new QGroupBox(centralWidget);
         toolsBox->setObjectName(QStringLiteral("toolsBox"));
         toolsBox->setMinimumSize(QSize(1261, 80));
+        toolsBox->setAcceptDrops(true);
         toolsBox->setAutoFillBackground(true);
         layoutWidget = new QWidget(toolsBox);
         layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
@@ -117,6 +126,28 @@ public:
 
         verticalLayout->addWidget(label);
 
+        pushButton = new QPushButton(toolsBox);
+        pushButton->setObjectName(QStringLiteral("pushButton"));
+        pushButton->setGeometry(QRect(490, 20, 75, 23));
+        pushButton_2 = new QPushButton(toolsBox);
+        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
+        pushButton_2->setGeometry(QRect(670, 20, 75, 23));
+        horizontalSlider = new QSlider(toolsBox);
+        horizontalSlider->setObjectName(QStringLiteral("horizontalSlider"));
+        horizontalSlider->setGeometry(QRect(990, 30, 281, 20));
+        horizontalSlider->setMinimum(1);
+        horizontalSlider->setMaximum(10);
+        horizontalSlider->setValue(5);
+        horizontalSlider->setOrientation(Qt::Horizontal);
+        label_2 = new QLabel(toolsBox);
+        label_2->setObjectName(QStringLiteral("label_2"));
+        label_2->setGeometry(QRect(930, 30, 54, 12));
+        label_3 = new QLabel(toolsBox);
+        label_3->setObjectName(QStringLiteral("label_3"));
+        label_3->setGeometry(QRect(1000, 50, 16, 16));
+        label_4 = new QLabel(toolsBox);
+        label_4->setObjectName(QStringLiteral("label_4"));
+        label_4->setGeometry(QRect(1260, 50, 21, 16));
 
         gridLayout->addWidget(toolsBox, 1, 0, 1, 1);
 
@@ -163,6 +194,11 @@ public:
         action_Print->setText(QApplication::translate("MainWindow", "&Print", 0));
         toolsBox->setTitle(QApplication::translate("MainWindow", "\345\267\245\345\205\267\346\240\217", 0));
         label->setText(QApplication::translate("MainWindow", " rotate:0", 0));
+        pushButton->setText(QApplication::translate("MainWindow", "magnifier", 0));
+        pushButton_2->setText(QApplication::translate("MainWindow", "minify", 0));
+        label_2->setText(QApplication::translate("MainWindow", "\346\230\276\347\244\272\346\257\224\344\276\213", 0));
+        label_3->setText(QApplication::translate("MainWindow", "-", 0));
+        label_4->setText(QApplication::translate("MainWindow", "+", 0));
         menu_f->setTitle(QApplication::translate("MainWindow", "&File", 0));
         menu_Operate->setTitle(QApplication::translate("MainWindow", "&Edit", 0));
         menu_About->setTitle(QApplication::translate("MainWindow", "&About", 0));
