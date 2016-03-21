@@ -55,6 +55,7 @@ public:
     QLabel *label_2;
     QLabel *label_3;
     QLabel *label_4;
+    QPushButton *penButton;
     QMenuBar *menuBar;
     QMenu *menu_f;
     QMenu *menu_Operate;
@@ -91,8 +92,12 @@ public:
         scrollArea = new QScrollArea(centralWidget);
         scrollArea->setObjectName(QStringLiteral("scrollArea"));
         scrollArea->setMinimumSize(QSize(1251, 521));
+        scrollArea->viewport()->setProperty("cursor", QVariant(QCursor(Qt::PointingHandCursor)));
+        scrollArea->setMouseTracking(true);
+        scrollArea->setFocusPolicy(Qt::TabFocus);
         scrollArea->setAcceptDrops(true);
         scrollArea->setAutoFillBackground(true);
+        scrollArea->setSizeAdjustPolicy(QAbstractScrollArea::AdjustIgnored);
         scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QStringLiteral("scrollAreaWidgetContents"));
@@ -123,21 +128,22 @@ public:
 
         label = new QLabel(layoutWidget);
         label->setObjectName(QStringLiteral("label"));
+        label->setAutoFillBackground(false);
 
         verticalLayout->addWidget(label);
 
         pushButton = new QPushButton(toolsBox);
         pushButton->setObjectName(QStringLiteral("pushButton"));
-        pushButton->setGeometry(QRect(490, 20, 75, 23));
+        pushButton->setGeometry(QRect(490, 20, 75, 31));
         pushButton_2 = new QPushButton(toolsBox);
         pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
-        pushButton_2->setGeometry(QRect(670, 20, 75, 23));
+        pushButton_2->setGeometry(QRect(670, 20, 75, 31));
         horizontalSlider = new QSlider(toolsBox);
         horizontalSlider->setObjectName(QStringLiteral("horizontalSlider"));
         horizontalSlider->setGeometry(QRect(990, 30, 281, 20));
-        horizontalSlider->setMinimum(1);
-        horizontalSlider->setMaximum(10);
-        horizontalSlider->setValue(5);
+        horizontalSlider->setMinimum(-7);
+        horizontalSlider->setMaximum(7);
+        horizontalSlider->setValue(0);
         horizontalSlider->setOrientation(Qt::Horizontal);
         label_2 = new QLabel(toolsBox);
         label_2->setObjectName(QStringLiteral("label_2"));
@@ -148,6 +154,9 @@ public:
         label_4 = new QLabel(toolsBox);
         label_4->setObjectName(QStringLiteral("label_4"));
         label_4->setGeometry(QRect(1260, 50, 21, 16));
+        penButton = new QPushButton(toolsBox);
+        penButton->setObjectName(QStringLiteral("penButton"));
+        penButton->setGeometry(QRect(380, 20, 75, 31));
 
         gridLayout->addWidget(toolsBox, 1, 0, 1, 1);
 
@@ -194,11 +203,12 @@ public:
         action_Print->setText(QApplication::translate("MainWindow", "&Print", 0));
         toolsBox->setTitle(QApplication::translate("MainWindow", "\345\267\245\345\205\267\346\240\217", 0));
         label->setText(QApplication::translate("MainWindow", " rotate:0", 0));
-        pushButton->setText(QApplication::translate("MainWindow", "magnifier", 0));
-        pushButton_2->setText(QApplication::translate("MainWindow", "minify", 0));
+        pushButton->setText(QApplication::translate("MainWindow", "\346\224\276\345\244\247", 0));
+        pushButton_2->setText(QApplication::translate("MainWindow", "\347\274\251\345\260\217", 0));
         label_2->setText(QApplication::translate("MainWindow", "\346\230\276\347\244\272\346\257\224\344\276\213", 0));
         label_3->setText(QApplication::translate("MainWindow", "-", 0));
         label_4->setText(QApplication::translate("MainWindow", "+", 0));
+        penButton->setText(QApplication::translate("MainWindow", "penButton", 0));
         menu_f->setTitle(QApplication::translate("MainWindow", "&File", 0));
         menu_Operate->setTitle(QApplication::translate("MainWindow", "&Edit", 0));
         menu_About->setTitle(QApplication::translate("MainWindow", "&About", 0));

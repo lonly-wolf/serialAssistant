@@ -27,11 +27,23 @@
         <height>521</height>
        </size>
       </property>
+      <property name="cursor" stdset="0">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::TabFocus</enum>
+      </property>
       <property name="acceptDrops">
        <bool>true</bool>
       </property>
       <property name="autoFillBackground">
        <bool>true</bool>
+      </property>
+      <property name="sizeAdjustPolicy">
+       <enum>QAbstractScrollArea::AdjustIgnored</enum>
       </property>
       <property name="widgetResizable">
        <bool>true</bool>
@@ -45,8 +57,6 @@
          <height>575</height>
         </rect>
        </property>
-       <zorder>toolsBox</zorder>
-       <zorder>toolsBox</zorder>
       </widget>
      </widget>
     </item>
@@ -92,6 +102,9 @@
         </item>
         <item>
          <widget class="QLabel" name="label">
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
           <property name="text">
            <string> rotate:0</string>
           </property>
@@ -105,11 +118,11 @@
          <x>490</x>
          <y>20</y>
          <width>75</width>
-         <height>23</height>
+         <height>31</height>
         </rect>
        </property>
        <property name="text">
-        <string>magnifier</string>
+        <string>放大</string>
        </property>
       </widget>
       <widget class="QPushButton" name="pushButton_2">
@@ -118,11 +131,11 @@
          <x>670</x>
          <y>20</y>
          <width>75</width>
-         <height>23</height>
+         <height>31</height>
         </rect>
        </property>
        <property name="text">
-        <string>minify</string>
+        <string>缩小</string>
        </property>
       </widget>
       <widget class="QSlider" name="horizontalSlider">
@@ -135,13 +148,13 @@
         </rect>
        </property>
        <property name="minimum">
-        <number>1</number>
+        <number>-7</number>
        </property>
        <property name="maximum">
-        <number>10</number>
+        <number>7</number>
        </property>
        <property name="value">
-        <number>5</number>
+        <number>0</number>
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -184,6 +197,19 @@
        </property>
        <property name="text">
         <string>+</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="penButton">
+       <property name="geometry">
+        <rect>
+         <x>380</x>
+         <y>20</y>
+         <width>75</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>penButton</string>
        </property>
       </widget>
      </widget>

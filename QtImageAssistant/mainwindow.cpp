@@ -5,6 +5,7 @@
 #include<QLabel>
 #include<QFileDialog>
 #include<QMessageBox>
+#include<QMouseEvent>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -15,16 +16,27 @@ MainWindow::MainWindow(QWidget *parent) :
     labelWidget=new QLabel;
     myImage2=new QImage;
     painter=new QPainter;
+    drawLabel=new myLabel;
+    drawLabel->setStyleSheet("background-color:black");
+
     //设置scrollerArea的滚动条策略
     ui->scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     labelWidget->setAlignment(Qt::AlignCenter);
-    ui->scrollArea->setWidget(labelWidget);
+    labelWidget->setText("pictureShow~");
+    labelWidget->setAutoFillBackground(true);
+    //labelWidget->setStyleSheet("background-color:black");
+    ui->scrollArea->setAlignment(Qt::AlignCenter);
+    ui->scrollArea->setWidget(drawLabel);
+    labelWidget->installEventFilter(this); //控件事件过滤器
     picSize=1;
     picPosition=0;
     hasTrans=false;
-
-
+    lastPosition=ui->imageRotate->value();
+    picSizeCount=0;
+    picSliderCount=0;
+    lastPoint.setX(labelWidget->pos().x());
+    lastPoint.setY(labelWidget->pos().y());
 }
 
 MainWindow::~MainWindow()
@@ -37,7 +49,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::drawPaint()
 {
-    painter->begin(this);
+    painter->begin(drawLabel);
     QPen pen(Qt::blue);
     QBrush brush1(Qt::blue,Qt::Dense3Pattern);  //用指定的颜色和模式绘制图形
     pen.setBrush(brush1);
@@ -120,18 +132,13 @@ void MainWindow::transformImage()
 
  //  painter->end();
 
-
-
 }
 
 void MainWindow::paintEvent(QPaintEvent *event)
 {
-    //drawPaint();
+     drawPaint();
   // transformImage();
     qDebug()<<"paintEvent loaded!";
-
-
-
 }
 
 
@@ -149,6 +156,7 @@ void MainWindow::on_actionOpen_triggered()
           imageWidth=myImage2->width();
           imageHeight=myImage2->height();
           labelWidget->setPixmap(QPixmap::fromImage(myImage));
+
           qDebug()<<"myImage loaded2";
          // labelWidget->setContentsMargins(ui->scrollArea->width()/2- myImage2->width()/2,ui->scrollArea->height()/2-myImage2->height()/2,ui->scrollArea->width()/2- myImage2->width()/2,ui->scrollArea->height()/2-myImage2->height()/2);
           qDebug()<<"myImage loaded3";
@@ -171,7 +179,16 @@ void MainWindow::on_imageRotate_sliderMoved(int position)
          hasTrans=true;
         qDebug()<<position;
         ui->label->setText("rotate:" + QString::number(position,10));
-        matrix.rotate(position/12);
+        if(position>=lastPosition){
+           matrix.rotate(position-lastPosition);
+           lastPosition=position;
+        }
+        else if((position<lastPosition)){
+            matrix.rotate((position-lastPosition));
+
+            lastPosition=position;
+        }
+
         *myImage2=myImage.transformed(matrix);
         *myImage2=myImage2->scaled(imageWidth,imageHeight,Qt::KeepAspectRatio);
         labelWidget->setPixmap(QPixmap::fromImage(*myImage2));
@@ -186,18 +203,21 @@ void MainWindow::on_pushButton_clicked()
 {
 
 if(!myImage.isNull()){
-     if(myImage2->width()<=8192 && (myImage2->height())<=8192){
+     if(myImage2->width()<=8192 && (myImage2->height())<=8192 && picSizeCount<=7 ){
          if(hasTrans){
-             matrix.rotate(picPosition-picPosition);
-             myImage=myImage.transformed(matrix);
+              matrix.rotate(0);
+              myImage=myImage.transformed(matrix);
          }
         *myImage2=myImage.scaled(myImage2->width()/0.8,myImage2->height()/0.8,Qt::KeepAspectRatio);
-         //labelWidget->setContentsMargins(ui->scrollArea->width()/2- myImage2->width()/2,ui->scrollArea->height()/2-myImage2->height()/2,ui->scrollArea->width()/2- myImage2->width()/2,ui->scrollArea->height()/2-myImage2->height()/2);
          labelWidget->setPixmap(QPixmap::fromImage(*myImage2));
+
          imageWidth=myImage2->width();
          imageHeight=myImage2->height();
          hasTrans=false;
-
+         picSizeCount+=1;
+         ui->horizontalSlider->setValue(picSizeCount);
+         picSliderCount=ui->horizontalSlider->value();
+         qDebug()<<picSizeCount;
      }
 }
 }
@@ -206,35 +226,125 @@ if(!myImage.isNull()){
 void MainWindow::on_pushButton_2_clicked()
 {
    // myImage=*myImage2;
-    if(!myImage.isNull()){
+    if(!myImage.isNull() && picSizeCount>-7 ){
         if(myImage2->width()>=30 && myImage2->height()>=30){
             if(hasTrans){
-                matrix.rotate(picPosition-picPosition);
-                myImage=myImage.transformed(matrix);
+                 matrix.rotate(0);
+                 myImage=myImage.transformed(matrix);
                // labelWidget->setPixmap(QPixmap::fromImage(*myImage2));
             }
-           *myImage2=myImage.scaled(myImage2->width()/1.3,myImage2->height()/1.3,Qt::KeepAspectRatio);//设置无损缩放
+           *myImage2=myImage.scaled(myImage2->width()*0.8,myImage2->height()*0.8,Qt::KeepAspectRatio);//设置无损缩放
           // labelWidget->setContentsMargins(ui->scrollArea->width()/2- myImage2->width()/2,ui->scrollArea->height()/2-myImage2->height()/2,ui->scrollArea->width()/2- myImage2->width()/2,ui->scrollArea->height()/2-myImage2->height()/2);
             labelWidget->setPixmap(QPixmap::fromImage(*myImage2));
+
             imageWidth=myImage2->width();
             imageHeight=myImage2->height();
            //myImage=*myImage2;
             hasTrans=false;
-
+            picSizeCount-=1;
+            ui->horizontalSlider->setValue(picSizeCount);
+            picSliderCount=ui->horizontalSlider->value();
+            qDebug()<<picSizeCount;
         }
     }
 
 }
-
+//水平滚动放大条
 void MainWindow::on_horizontalSlider_sliderMoved(int position)
 {
-    qDebug()<<position;
-    if(position>5){
+
+    if(position>=picSliderCount){
         on_pushButton_clicked();
     }
-    else if(position<5){
+    else if(position<picSliderCount){
         on_pushButton_2_clicked();
+    }
+
+}
+
+//事件过滤器
+bool MainWindow::eventFilter(QObject *obj,QEvent *event){
+    if(event->type()==QEvent::MouseButtonPress && obj==labelWidget){
+        //图像拖动事件
+        QMouseEvent *mouseEvent=static_cast<QMouseEvent *>(event);
+        beginPoint.setX(mouseEvent->pos().x());
+        beginPoint.setY(mouseEvent->pos().y());
+        qDebug("begin point:%d, %d",mouseEvent->pos().x(),mouseEvent->pos().y());
+        return true;
+    }
+    else if(event->type()==QEvent::MouseMove && obj==labelWidget){
+        //图像拖动事件
+        QMouseEvent *mouseEvent=static_cast<QMouseEvent *>(event);
+        //endPoint.setX(mouseEvent->pos().x());
+      //  endPoint.setY(mouseEvent->pos().y());
+        qDebug("mouse is moving:%d, %d",mouseEvent->pos().x(),mouseEvent->pos().y());
+        qDebug("labelWidget position::%d,%d",labelWidget->pos().x(),labelWidget->pos().y());
+        labelWidget->setGeometry(mouseEvent->pos().x()-beginPoint.x()+labelWidget->pos().x(),mouseEvent->pos().y()-beginPoint.y()+labelWidget->pos().y(),labelWidget->width(),labelWidget->height());
+        return true;
+    }
+    else if(event->type()==QEvent::MouseButtonDblClick && obj==labelWidget){
+        //双击放大事件
+        if(!myImage.isNull()){
+             if(myImage2->width()<=8192 && (myImage2->height())<=8192 && picSizeCount<=7 ){
+                 if(hasTrans){
+                      matrix.rotate(0);
+                      myImage=myImage.transformed(matrix);
+                 }
+                *myImage2=myImage.scaled(myImage2->width()/0.8,myImage2->height()/0.8,Qt::KeepAspectRatio);
+                labelWidget->setPixmap(QPixmap::fromImage(*myImage2));
+                // labelWidget->size().setWidth(myImage2->width());
+                // labelWidget->size().setHeight(myImage2->height());
+                // labelWidget->move(ui->scrollArea->width()/2-beginPoint.x(),ui->scrollArea->height()/2-beginPoint.y());
+               //  labelWidget->setGeometry(ui->scrollArea->width()/2-beginPoint.x()+labelWidget->x(),ui->scrollArea->width()/2-beginPoint.x()+labelWidget->x(),labelWidget->width(),labelWidget->height());
+                 imageWidth=myImage2->width();
+                 imageHeight=myImage2->height();
+                 hasTrans=false;
+                 picSizeCount+=1;
+                 ui->horizontalSlider->setValue(picSizeCount);
+                 picSliderCount=ui->horizontalSlider->value();
+                 labelWidget->setGeometry(300,500,labelWidget->width(),labelWidget->height());
+
+
+                 qDebug("doubleClicked::old labelWidget position::%d, %d",labelWidget->pos().x(),labelWidget->pos().y());
+              }
+        }
+
 
     }
+    else{
+        //标准的处理进程
+        return QObject::eventFilter(obj,event);
+    }
+}
+
+
+//鼠标移事件
+void MainWindow::mouseMoveEvent(QMouseEvent *event){
+
+
+
+}
+
+//鼠标双击事件
+void MainWindow::mouseDoubleClickEvent(QMouseEvent *event){
+
+}
+
+
+
+//画笔点击事件
+void MainWindow::on_penButton_clicked()
+{
+    drawPaint();
+}
+
+//重写label方法
+void myLabel::paintEvent(QPaintEvent *event)
+{
+    //QLabel::paintEvent(event);
+    QPainter painter(this);
+        painter.setPen(QPen(Qt::red,2));
+        painter.drawRect(QRect(100,200,200,200));
+        qDebug()<<"myLabel";
 
 }
