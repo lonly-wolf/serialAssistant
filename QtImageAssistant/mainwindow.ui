@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1307</width>
-    <height>738</height>
+    <height>776</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -54,7 +54,7 @@
          <x>0</x>
          <y>0</y>
          <width>1287</width>
-         <height>575</height>
+         <height>613</height>
         </rect>
        </property>
       </widget>
@@ -202,15 +202,45 @@
       <widget class="QPushButton" name="penButton">
        <property name="geometry">
         <rect>
-         <x>380</x>
-         <y>20</y>
+         <x>20</x>
+         <y>30</y>
          <width>75</width>
          <height>31</height>
         </rect>
        </property>
        <property name="text">
-        <string>penButton</string>
+        <string>画笔</string>
        </property>
+      </widget>
+      <widget class="QComboBox" name="penType">
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>30</y>
+         <width>69</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>直线</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>矩形</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>圆</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>自由绘制</string>
+        </property>
+       </item>
       </widget>
      </widget>
     </item>

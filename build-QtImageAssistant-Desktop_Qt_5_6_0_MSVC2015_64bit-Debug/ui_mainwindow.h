@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QComboBox>
 #include <QtWidgets/QDial>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QGroupBox>
@@ -56,6 +57,7 @@ public:
     QLabel *label_3;
     QLabel *label_4;
     QPushButton *penButton;
+    QComboBox *penType;
     QMenuBar *menuBar;
     QMenu *menu_f;
     QMenu *menu_Operate;
@@ -67,7 +69,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(1307, 738);
+        MainWindow->resize(1307, 776);
         QIcon icon;
         icon.addFile(QStringLiteral(":/image2.png"), QSize(), QIcon::Normal, QIcon::Off);
         MainWindow->setWindowIcon(icon);
@@ -101,7 +103,7 @@ public:
         scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QStringLiteral("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 1287, 575));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 1287, 613));
         scrollArea->setWidget(scrollAreaWidgetContents);
 
         gridLayout->addWidget(scrollArea, 0, 0, 1, 1);
@@ -156,7 +158,10 @@ public:
         label_4->setGeometry(QRect(1260, 50, 21, 16));
         penButton = new QPushButton(toolsBox);
         penButton->setObjectName(QStringLiteral("penButton"));
-        penButton->setGeometry(QRect(380, 20, 75, 31));
+        penButton->setGeometry(QRect(20, 30, 75, 31));
+        penType = new QComboBox(toolsBox);
+        penType->setObjectName(QStringLiteral("penType"));
+        penType->setGeometry(QRect(120, 30, 69, 22));
 
         gridLayout->addWidget(toolsBox, 1, 0, 1, 1);
 
@@ -208,7 +213,14 @@ public:
         label_2->setText(QApplication::translate("MainWindow", "\346\230\276\347\244\272\346\257\224\344\276\213", 0));
         label_3->setText(QApplication::translate("MainWindow", "-", 0));
         label_4->setText(QApplication::translate("MainWindow", "+", 0));
-        penButton->setText(QApplication::translate("MainWindow", "penButton", 0));
+        penButton->setText(QApplication::translate("MainWindow", "\347\224\273\347\254\224", 0));
+        penType->clear();
+        penType->insertItems(0, QStringList()
+         << QApplication::translate("MainWindow", "\347\233\264\347\272\277", 0)
+         << QApplication::translate("MainWindow", "\347\237\251\345\275\242", 0)
+         << QApplication::translate("MainWindow", "\345\234\206", 0)
+         << QApplication::translate("MainWindow", "\350\207\252\347\224\261\347\273\230\345\210\266", 0)
+        );
         menu_f->setTitle(QApplication::translate("MainWindow", "&File", 0));
         menu_Operate->setTitle(QApplication::translate("MainWindow", "&Edit", 0));
         menu_About->setTitle(QApplication::translate("MainWindow", "&About", 0));

@@ -15,14 +15,16 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+     QImage   *myImage2; //经过处理的图片
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
 
 private:
     Ui::MainWindow *ui;
     QPainter *painter;
     QImage   myImage;//图片
-    QImage   *myImage2; //经过处理的图片
+
     QImage *myImage3; //保存原始图片
     QLabel *labelWidget;//放置图片的label
     QString imageName;//图片路径
@@ -37,11 +39,13 @@ private:
     int picPosition;//图片旋转角度
     int lastPosition; //图片的上一次的角度
     bool hasTrans;  //判断上一个动作是旋转
+    bool isPen;
     int picSizeCount; //放大、缩小倍数
     int picSliderCount; //滑块上一次的值
 
     void drawPaint(); //绘制图形（测试版）
     void transformImage();// 调整图像位置 大小
+
 
 private slots:
     void on_actionOpen_triggered(); //菜单栏打开图片
@@ -56,7 +60,7 @@ protected:
     void paintEvent(QPaintEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *event);
-    bool eventFilter(QObject *obj,QEvent *event);   //事件过滤器
+  //  bool eventFilter(QObject *obj,QEvent *event);   //事件过滤器
 };
 
 #endif // MAINWINDOW_H

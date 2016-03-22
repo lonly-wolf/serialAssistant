@@ -286,6 +286,10 @@ release\moc_mainwindow.cpp: D:\QT\5.6\msvc2015_64\include\QtWidgets\QMainWindow 
 		D:\QT\5.6\msvc2015_64\include\QtGui\qicon.h \
 		..\QtImageAssistant\mylabel.h \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\QWidget \
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\QLabel \
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\qlabel.h \
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\qframe.h \
+		D:\QT\5.6\msvc2015_64\include\QtCore\QPoint \
 		..\QtImageAssistant\mainwindow.h
 	D:\QT\5.6\msvc2015_64\bin\moc.exe $(DEFINES) -D_MSC_VER=1900 -D_WIN32 -D_WIN64 -ID:/QT/5.6/msvc2015_64/mkspecs/win32-msvc2015 -IC:/Users/FBT1011/Desktop/Git/QtImageAssistant -ID:/QT/5.6/msvc2015_64/include -ID:/QT/5.6/msvc2015_64/include/QtWidgets -ID:/QT/5.6/msvc2015_64/include/QtGui -ID:/QT/5.6/msvc2015_64/include/QtANGLE -ID:/QT/5.6/msvc2015_64/include/QtCore -I. ..\QtImageAssistant\mainwindow.h -o release\moc_mainwindow.cpp
 
@@ -393,6 +397,10 @@ release\moc_mylabel.cpp: D:\QT\5.6\msvc2015_64\include\QtWidgets\QWidget \
 		D:\QT\5.6\msvc2015_64\include\QtCore\qfiledevice.h \
 		D:\QT\5.6\msvc2015_64\include\QtGui\qvector2d.h \
 		D:\QT\5.6\msvc2015_64\include\QtGui\qtouchdevice.h \
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\QLabel \
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\qlabel.h \
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\qframe.h \
+		D:\QT\5.6\msvc2015_64\include\QtCore\QPoint \
 		..\QtImageAssistant\mylabel.h
 	D:\QT\5.6\msvc2015_64\bin\moc.exe $(DEFINES) -D_MSC_VER=1900 -D_WIN32 -D_WIN64 -ID:/QT/5.6/msvc2015_64/mkspecs/win32-msvc2015 -IC:/Users/FBT1011/Desktop/Git/QtImageAssistant -ID:/QT/5.6/msvc2015_64/include -ID:/QT/5.6/msvc2015_64/include/QtWidgets -ID:/QT/5.6/msvc2015_64/include/QtGui -ID:/QT/5.6/msvc2015_64/include/QtANGLE -ID:/QT/5.6/msvc2015_64/include/QtCore -I. ..\QtImageAssistant\mylabel.h -o release\moc_mylabel.cpp
 
@@ -526,6 +534,10 @@ release\main.obj: ..\QtImageAssistant\main.cpp ../QtImageAssistant/mainwindow.h 
 		D:\QT\5.6\msvc2015_64\include\QtGui\qicon.h \
 		../QtImageAssistant/mylabel.h \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\QWidget \
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\QLabel \
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\qlabel.h \
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\qframe.h \
+		D:\QT\5.6\msvc2015_64\include\QtCore\QPoint \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\QApplication \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\qapplication.h \
 		D:\QT\5.6\msvc2015_64\include\QtCore\qcoreapplication.h \
@@ -652,33 +664,30 @@ release\mainwindow.obj: ..\QtImageAssistant\mainwindow.cpp ui_mainwindow.h \
 		D:\QT\5.6\msvc2015_64\include\QtGui\qinputmethod.h \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\QButtonGroup \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\qbuttongroup.h \
-		D:\QT\5.6\msvc2015_64\include\QtWidgets\QDial \
-		D:\QT\5.6\msvc2015_64\include\QtWidgets\qdial.h \
-		D:\QT\5.6\msvc2015_64\include\QtWidgets\qabstractslider.h \
-		D:\QT\5.6\msvc2015_64\include\QtWidgets\QGridLayout \
-		D:\QT\5.6\msvc2015_64\include\QtWidgets\qgridlayout.h \
-		D:\QT\5.6\msvc2015_64\include\QtWidgets\qlayout.h \
-		D:\QT\5.6\msvc2015_64\include\QtWidgets\qlayoutitem.h \
-		D:\QT\5.6\msvc2015_64\include\QtWidgets\qboxlayout.h \
-		D:\QT\5.6\msvc2015_64\include\QtWidgets\QGroupBox \
-		D:\QT\5.6\msvc2015_64\include\QtWidgets\qgroupbox.h \
-		D:\QT\5.6\msvc2015_64\include\QtWidgets\qframe.h \
-		D:\QT\5.6\msvc2015_64\include\QtWidgets\QHeaderView \
-		D:\QT\5.6\msvc2015_64\include\QtWidgets\qheaderview.h \
-		D:\QT\5.6\msvc2015_64\include\QtWidgets\qabstractitemview.h \
-		D:\QT\5.6\msvc2015_64\include\QtWidgets\qabstractscrollarea.h \
-		D:\QT\5.6\msvc2015_64\include\QtCore\qabstractitemmodel.h \
-		D:\QT\5.6\msvc2015_64\include\QtCore\qitemselectionmodel.h \
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\QComboBox \
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\qcombobox.h \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\qabstractitemdelegate.h \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\qstyleoption.h \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\qabstractspinbox.h \
 		D:\QT\5.6\msvc2015_64\include\QtGui\qvalidator.h \
 		D:\QT\5.6\msvc2015_64\include\QtCore\qregularexpression.h \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\qslider.h \
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\qabstractslider.h \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\qstyle.h \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\qtabbar.h \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\qtabwidget.h \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\qrubberband.h \
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\qframe.h \
+		D:\QT\5.6\msvc2015_64\include\QtCore\qabstractitemmodel.h \
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\QDial \
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\qdial.h \
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\QGroupBox \
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\qgroupbox.h \
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\QHeaderView \
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\qheaderview.h \
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\qabstractitemview.h \
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\qabstractscrollarea.h \
+		D:\QT\5.6\msvc2015_64\include\QtCore\qitemselectionmodel.h \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\QLabel \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\qlabel.h \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\QMainWindow \
@@ -698,6 +707,10 @@ release\mainwindow.obj: ..\QtImageAssistant\mainwindow.cpp ui_mainwindow.h \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\QToolBar \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\qtoolbar.h \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\QVBoxLayout \
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\qboxlayout.h \
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\qlayout.h \
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\qlayoutitem.h \
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\qgridlayout.h \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\QWidget \
 		D:\QT\5.6\msvc2015_64\include\QtGui\QPainter \
 		D:\QT\5.6\msvc2015_64\include\QtGui\qpainter.h \
@@ -711,7 +724,9 @@ release\mainwindow.obj: ..\QtImageAssistant\mainwindow.cpp ui_mainwindow.h \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\qdialog.h \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\QMessageBox \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\qmessagebox.h \
-		D:\QT\5.6\msvc2015_64\include\QtGui\QMouseEvent
+		D:\QT\5.6\msvc2015_64\include\QtGui\QMouseEvent \
+		D:\QT\5.6\msvc2015_64\include\QtCore\QLinkedList \
+		D:\QT\5.6\msvc2015_64\include\QtCore\qlinkedlist.h
 
 release\mylabel.obj: ..\QtImageAssistant\mylabel.cpp ../QtImageAssistant/mylabel.h \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\QWidget \
@@ -820,7 +835,16 @@ release\mylabel.obj: ..\QtImageAssistant\mylabel.cpp ../QtImageAssistant/mylabel
 		D:\QT\5.6\msvc2015_64\include\QtGui\qtouchdevice.h \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\QLabel \
 		D:\QT\5.6\msvc2015_64\include\QtWidgets\qlabel.h \
-		D:\QT\5.6\msvc2015_64\include\QtWidgets\qframe.h
+		D:\QT\5.6\msvc2015_64\include\QtWidgets\qframe.h \
+		D:\QT\5.6\msvc2015_64\include\QtCore\QPoint \
+		D:\QT\5.6\msvc2015_64\include\QtGui\QPixmap \
+		D:\QT\5.6\msvc2015_64\include\QtGui\QMouseEvent \
+		D:\QT\5.6\msvc2015_64\include\QtGui\QPainter \
+		D:\QT\5.6\msvc2015_64\include\QtGui\qpainter.h \
+		D:\QT\5.6\msvc2015_64\include\QtGui\qtextoption.h \
+		D:\QT\5.6\msvc2015_64\include\QtGui\qpen.h \
+		D:\QT\5.6\msvc2015_64\include\QtCore\QPointF \
+		D:\QT\5.6\msvc2015_64\include\QtCore\QDebug
 
 release\qrc_images.obj: release\qrc_images.cpp 
 
