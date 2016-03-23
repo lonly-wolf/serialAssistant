@@ -45,14 +45,30 @@ private:
 
     void drawPaint(); //绘制图形（测试版）
     void transformImage();// 调整图像位置 大小
+    QImage * greyScale(QImage *image); //灰度调节
+    QImage * lightScale(QImage *image,int lightSize); //亮度调节
+    QImage * warmScale(QImage *image,int warmSize);//暖色调节
+    QImage * mohuScale(QImage *image);//模糊调节
+    QImage * sharpScale(QImage *image);//锐化调节
 private slots:
     void on_actionOpen_triggered(); //菜单栏打开图片
     void on_imageRotate_sliderMoved(int position);//旋转图片
     void on_pushButton_clicked(); //放大图片
     void on_pushButton_2_clicked();//缩小图片
     void on_horizontalSlider_sliderMoved(int position); //显示比例
-
+    void on_actionSave_triggered(); //保存图片
     void on_penButton_clicked();//画笔点击事件
+    void on_grayAction_triggered();//灰度调节
+    void on_lightAdd15_triggered();
+    void on_lightAdd30_triggered();
+    void on_lightAdd45_triggered();
+    void on_lightAdd65_triggered();
+    void on_lightAdd85_triggered();
+    void on_lightAdd100_triggered();
+    void on_warmAction2_triggered();
+    void on_mohuAction_triggered();
+    void on_sharpAction_triggered();
+
 
 protected:
     void paintEvent(QPaintEvent *event);

@@ -326,6 +326,216 @@ void MainWindow::on_penButton_clicked()
 
 }
 
+void MainWindow::on_actionSave_triggered()
+{
+    QString saveName=QFileDialog::getSaveFileName(this,QStringLiteral("Please open a picture"),"","Images (*.png *.bmp *.jpg *.tif *.GIF)");
+    qDebug()<<saveName;
+    if(!saveName.isNull()){
+        drawLabel->getMyImage().save(saveName);
+        QMessageBox::warning(this,"save","save successful");
+    }
+
+
+
+
+}
+
+//灰度调节
+QImage * MainWindow::greyScale(QImage *image)
+{
+    QImage * newImage=new QImage(image->width(),image->height(),QImage::Format_ARGB32);
+    QRgb *lineRgb;
+    for(int y=0;y<newImage->height();y++){
+        lineRgb=(QRgb *)image->scanLine(y); //按行扫描
+        for(int x=0;x<newImage->width();x++){
+            int average=(qRed(lineRgb[x])+qGreen(lineRgb[x])+qRed(lineRgb[x]))/3;
+            newImage->setPixel(x,y,qRgb(average,average,average));
+
+        }
+    }
+    return newImage;
+}
+//灰度调节槽
+   void MainWindow::on_grayAction_triggered()
+   {
+       drawLabel->setImageByImage(greyScale(&drawLabel->getMyImage()));
+   }
+   //亮度调节
+   QImage * MainWindow::lightScale(QImage *image,int lightSize)
+   {
+       QImage * newImage=new QImage(image->width(),image->height(),QImage::Format_ARGB32);
+       QColor oldColor;
+       QRgb *lineRgb;
+       int r,g,b;
+       for(int y=0;y<newImage->height();y++){
+           lineRgb=(QRgb *)image->scanLine(y);
+           for(int x=0;x<newImage->width();x++){
+               newImage->setPixel(x,y,qRgb(qRed(lineRgb[x])+lightSize/10,qGreen(lineRgb[x])+lightSize/10,qBlue(lineRgb[x])+lightSize/10));
+           }
+       }
+
+
+return newImage;
+   }
+//亮度调节
+void MainWindow::on_lightAdd15_triggered()
+{
+    drawLabel->setImageByImage(lightScale(&drawLabel->getMyImage(),15));
+
+}
+//亮度调节
+ void MainWindow::on_lightAdd30_triggered()
+{
+     drawLabel->setImageByImage(lightScale(&drawLabel->getMyImage(),30));
+
+}
+//亮度调节
+void MainWindow::on_lightAdd45_triggered()
+{
+    drawLabel->setImageByImage(lightScale(&drawLabel->getMyImage(),45));
+
+}
+//亮度调节
+void MainWindow::on_lightAdd65_triggered()
+{
+    drawLabel->setImageByImage(lightScale(&drawLabel->getMyImage(),65));
+
+}
+ //亮度调节
+void MainWindow::on_lightAdd85_triggered()
+{
+    drawLabel->setImageByImage(lightScale(&drawLabel->getMyImage(),85));
+
+}
+//亮度调节
+void MainWindow::on_lightAdd100_triggered()
+{
+    drawLabel->setImageByImage(lightScale(&drawLabel->getMyImage(),100));
+
+}
+
+//暖色调节
+void MainWindow::on_warmAction2_triggered()
+{
+    drawLabel->setImageByImage(warmScale(&drawLabel->getMyImage(),30));
+
+}
+//冷色调节
+QImage * MainWindow::warmScale(QImage *image,int coolSize)
+{
+    QImage * newImage=new QImage(image->width(),image->height(),QImage::Format_ARGB32);
+    QColor oldColor;
+    QRgb *lineRgb;
+    int r,g,b;
+    for(int y=0;y<newImage->height();y++){
+        lineRgb=(QRgb *)image->scanLine(y);
+        for(int x=0;x<newImage->width();x++){
+            newImage->setPixel(x,y,qRgb(qRed(lineRgb[x]),qGreen(lineRgb[x]),qBlue(lineRgb[x])+coolSize));
+        }
+    }
+
+
+return newImage;
+
+}
+
+//模糊化
+void MainWindow::on_mohuAction_triggered()
+{
+    drawLabel->setImageByImage(mohuScale(&drawLabel->getMyImage()));
+
+
+}
+//模糊化
+QImage * MainWindow::mohuScale(QImage *image)
+{
+
+    QImage * newImage = new QImage(*image);
+
+     int kernel [5][5]= {{0,0,1,0,0},
+               {0,1,3,1,0},
+               {1,3,7,3,1},
+               {0,1,3,1,0},
+               {0,0,1,0,0}};
+     int kernelSize = 5;
+     int sumKernel = 27;
+     int r,g,b;
+     QColor color;
+     QRgb *lineRgb;
+     r = 0;
+     g = 0;
+     b = 0;
+     for(int y=kernelSize/2; y<newImage->height()-(kernelSize/2); y++){
+         lineRgb=(QRgb *)image->scanLine(y);
+       for(int x=kernelSize/2; x<newImage->height()-(kernelSize/2); x++){
+         for(int i = -kernelSize/2; i<= kernelSize/2; i++){
+           for(int j = -kernelSize/2; j<= kernelSize/2; j++){
+             color = QColor(image->pixel(x+i, y+j));
+             r += color.red()*kernel[kernelSize/2+i][kernelSize/2+j];
+             g += color.green()*kernel[kernelSize/2+i][kernelSize/2+j];
+             b += color.blue()*kernel[kernelSize/2+i][kernelSize/2+j];
+           }
+         }
+         //
+
+         r = qBound(0, r/sumKernel, 255);
+         g = qBound(0, g/sumKernel, 255);
+         b = qBound(0, b/sumKernel, 255);
+
+         newImage->setPixel(x,y, qRgb(r,g,b));
+
+       }
+     }
+     return newImage;
+}
+
+//锐化调节
+void MainWindow::on_sharpAction_triggered()
+{
+    drawLabel->setImageByImage(sharpScale(&drawLabel->getMyImage()));
+
+}
+//锐化调节
+QImage * MainWindow::sharpScale(QImage *image)
+{
+    QImage * newImage = new QImage(*image);
+
+     int kernel [3][3]= {{0,-1,0},
+               {-1,5,-1},
+               {0,-1,0}};
+     int kernelSize = 3;
+     int sumKernel = 1;
+     int r,g,b;
+     QColor color;
+
+     for(int x=kernelSize/2; x<newImage->width()-(kernelSize/2); x++){
+       for(int y=kernelSize/2; y<newImage->height()-(kernelSize/2); y++){
+
+         r = 0;
+         g = 0;
+         b = 0;
+
+         for(int i = -kernelSize/2; i<= kernelSize/2; i++){
+           for(int j = -kernelSize/2; j<= kernelSize/2; j++){
+             color = QColor(image->pixel(x+i, y+j));
+             r += color.red()*kernel[kernelSize/2+i][kernelSize/2+j];
+             g += color.green()*kernel[kernelSize/2+i][kernelSize/2+j];
+             b += color.blue()*kernel[kernelSize/2+i][kernelSize/2+j];
+           }
+         }
+
+         r = qBound(0, r/sumKernel, 255);
+         g = qBound(0, g/sumKernel, 255);
+         b = qBound(0, b/sumKernel, 255);
+
+         newImage->setPixel(x,y, qRgb(r,g,b));
+
+       }
+     }
+     return newImage;
+}
+
+
 /*
 //事件过滤器
 bool MainWindow::eventFilter(QObject *obj,QEvent *event){

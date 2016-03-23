@@ -237,7 +237,6 @@
     </property>
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
-    <addaction name="actionSave_as"/>
     <addaction name="action_Outport"/>
     <addaction name="action_Print"/>
    </widget>
@@ -251,9 +250,35 @@
      <string>&amp;About</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>高级</string>
+    </property>
+    <widget class="QMenu" name="menu_2">
+     <property name="title">
+      <string>亮度调节</string>
+     </property>
+     <addaction name="lightAdd15"/>
+     <addaction name="lightAdd30"/>
+     <addaction name="lightAdd45"/>
+     <addaction name="lightAdd65"/>
+     <addaction name="lightAdd85"/>
+     <addaction name="lightAdd100"/>
+    </widget>
+    <addaction name="grayAction"/>
+    <addaction name="menu_2"/>
+    <addaction name="action_5"/>
+    <addaction name="mohuAction"/>
+    <addaction name="sharpAction"/>
+    <addaction name="action_8"/>
+    <addaction name="action_9"/>
+    <addaction name="action_10"/>
+    <addaction name="warmAction2"/>
+   </widget>
    <addaction name="menu_f"/>
    <addaction name="menu_Operate"/>
    <addaction name="menu_About"/>
+   <addaction name="menu"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -292,6 +317,96 @@
   <action name="action_Print">
    <property name="text">
     <string>&amp;Print</string>
+   </property>
+  </action>
+  <action name="grayAction">
+   <property name="text">
+    <string>灰度调节</string>
+   </property>
+  </action>
+  <action name="coldAction">
+   <property name="text">
+    <string>冷色调节</string>
+   </property>
+  </action>
+  <action name="action_5">
+   <property name="text">
+    <string>饱和度调节</string>
+   </property>
+  </action>
+  <action name="mohuAction">
+   <property name="text">
+    <string>模糊化</string>
+   </property>
+  </action>
+  <action name="sharpAction">
+   <property name="text">
+    <string>锐化</string>
+   </property>
+  </action>
+  <action name="action_8">
+   <property name="text">
+    <string>金属化</string>
+   </property>
+  </action>
+  <action name="action_9">
+   <property name="text">
+    <string>边框设置</string>
+   </property>
+  </action>
+  <action name="action_10">
+   <property name="text">
+    <string>模糊边框</string>
+   </property>
+  </action>
+  <action name="lightAdd15">
+   <property name="text">
+    <string>+15%</string>
+   </property>
+  </action>
+  <action name="lightAdd30">
+   <property name="text">
+    <string>+30%</string>
+   </property>
+  </action>
+  <action name="lightAdd45">
+   <property name="text">
+    <string>+45%</string>
+   </property>
+  </action>
+  <action name="lightAdd65">
+   <property name="text">
+    <string>+65%</string>
+   </property>
+  </action>
+  <action name="lightAdd85">
+   <property name="text">
+    <string>+85%</string>
+   </property>
+  </action>
+  <action name="lightAdd100">
+   <property name="text">
+    <string>+100%</string>
+   </property>
+  </action>
+  <action name="action20">
+   <property name="text">
+    <string>20</string>
+   </property>
+  </action>
+  <action name="action30">
+   <property name="text">
+    <string>30</string>
+   </property>
+  </action>
+  <action name="action_12">
+   <property name="text">
+    <string> </string>
+   </property>
+  </action>
+  <action name="warmAction2">
+   <property name="text">
+    <string>暖色调节</string>
    </property>
   </action>
  </widget>
