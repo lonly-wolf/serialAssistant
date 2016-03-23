@@ -15,38 +15,39 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 
     ui->setupUi(this);
-    labelWidget=new QLabel;
     myImage2=new QImage;
     painter=new QPainter;
     drawLabel=new myLabel;
+
     drawLabel->setStyleSheet("background-color:black");
+    drawLabel->resize(9000,9000);
+    drawLabel->setAlignment(Qt::AlignCenter);
+    ui->scrollArea->setAlignment(Qt::AlignCenter);
+
     isPen=false;
 
     //设置scrollerArea的滚动条策略
-    ui->scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    labelWidget->setAlignment(Qt::AlignCenter);
-    labelWidget->setText("pictureShow~");
-    labelWidget->setAutoFillBackground(true);
-    //labelWidget->setStyleSheet("background-color:black");
-    ui->scrollArea->setAlignment(Qt::AlignCenter);
+  //  ui->scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+   // ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+
+
      ui->scrollArea->setWidget(drawLabel);
-    labelWidget->installEventFilter(this); //控件事件过滤器
     picSize=1;
     picPosition=0;
     hasTrans=false;
    // lastPosition=ui->imageRotate->value();
     picSizeCount=0;
     picSliderCount=0;
-    lastPoint.setX(labelWidget->pos().x());
-    lastPoint.setY(labelWidget->pos().y());
+  //  lastPoint.setX(labelWidget->pos().x());
+   // lastPoint.setY(labelWidget->pos().y());
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete labelWidget;
     delete painter;
+    delete  myImage2;
+    delete drawLabel;
 }
 
 
@@ -139,9 +140,9 @@ void MainWindow::transformImage()
 
 void MainWindow::paintEvent(QPaintEvent *event)
 {
-     drawPaint();
-  // transformImage();
-    qDebug()<<"paintEvent loaded!";
+
+   // drawLabel->size().setWidth(ui->scrollArea->width());
+  //  drawLabel->size().setHeight(ui->scrollArea->height());
 }
 
 
@@ -158,6 +159,8 @@ void MainWindow::on_actionOpen_triggered()
          // *myImage2=myImage; //将加载的图片信息拷贝给myImage2
         //  imageWidth=myImage2->width();
         //  imageHeight=myImage2->height();
+          initWidth=myImage.size().width();
+          initHeight=myImage.size().height();
           drawLabel->setImage(imageName);
 
           //labelWidget->setPixmap(QPixmap::fromImage(myImage));
@@ -181,8 +184,10 @@ void MainWindow::on_imageRotate_sliderMoved(int position)
 {
     picPosition=position;
     if(!myImage.isNull()){
+        qDebug()<<"transformed-----------------";
          hasTrans=true;
-        qDebug()<<position;
+        qDebug("position is %d,last position is %d",position,lastPosition);
+
         ui->label->setText("rotate:" + QString::number(position,10));
         if(position>=lastPosition){
            matrix.rotate(position-lastPosition);
@@ -190,13 +195,16 @@ void MainWindow::on_imageRotate_sliderMoved(int position)
         }
         else if((position<lastPosition)){
             matrix.rotate((position-lastPosition));
-
             lastPosition=position;
         }
 
-        *myImage2=myImage.transformed(matrix);
-        *myImage2=myImage2->scaled(imageWidth,imageHeight,Qt::KeepAspectRatio);
-        drawLabel->setPixmap(QPixmap::fromImage(*myImage2));
+
+          *myImage2=myImage.transformed(matrix,Qt::SmoothTransformation);
+
+        //*myImage2=myImage.transformed(matrix);
+        drawLabel->setImageByImage(myImage2);
+       // *myImage2=myImage2->scaled(imageWidth,imageHeight,Qt::KeepAspectRatio);
+       // drawLabel->setPixmap(QPixmap::fromImage(*myImage2));
     }
     else{
         return;
@@ -214,11 +222,18 @@ if(!myImage.isNull()){
               matrix.rotate(0);
               myImage=myImage.transformed(matrix);
          }
-        *myImage2=myImage.scaled(myImage2->width()/0.8,myImage2->height()/0.8,Qt::KeepAspectRatio);
-         drawLabel->setPixmap(QPixmap::fromImage(*myImage2));
-
-         imageWidth=myImage2->width();
-         imageHeight=myImage2->height();
+         *myImage2=myImage.scaled(myImage2->width()/0.8,myImage2->height()/0.8,Qt::KeepAspectRatio);
+         int scaleWidth=drawLabel->getMyImage().width()/0.8;
+         int scaleHeight=drawLabel->getMyImage().height()/0.8;
+         drawLabel->setImageWidth(scaleWidth);
+         drawLabel->setImageHeight(scaleHeight);
+         drawLabel->setImageByImage(&drawLabel->getMyImage().scaled(scaleWidth,scaleHeight,Qt::KeepAspectRatio));
+       //  drawLabel->resize(scaleWidth,scaleHeight);
+         //drawLabel->setPixmap(QPixmap::fromImage(drawLabel->getMyImage().scaled(10,10,Qt::KeepAspectRatio)));
+         qDebug()<<"scaling now....................";
+         update();
+         imageWidth=scaleWidth;
+         imageHeight=scaleHeight;
          hasTrans=false;
          picSizeCount+=1;
          ui->horizontalSlider->setValue(picSizeCount);
@@ -231,30 +246,39 @@ if(!myImage.isNull()){
 // 缩小图片
 void MainWindow::on_pushButton_2_clicked()
 {
+
+
    // myImage=*myImage2;
-    if(!myImage.isNull() && picSizeCount>-7 ){
-        if(myImage2->width()>=30 && myImage2->height()>=30){
+    if(!myImage.isNull() && picSizeCount>=0 ){
+        if(drawLabel->getMyImage().size().width()>initWidth){
+
+
+            qDebug()<<"scaling decrease  now....................";
+
             if(hasTrans){
                  matrix.rotate(0);
                  myImage=myImage.transformed(matrix);
-               // labelWidget->setPixmap(QPixmap::fromImage(*myImage2));
             }
-           *myImage2=myImage.scaled(myImage2->width()*0.8,myImage2->height()*0.8,Qt::KeepAspectRatio);//设置无损缩放
-          // labelWidget->setContentsMargins(ui->scrollArea->width()/2- myImage2->width()/2,ui->scrollArea->height()/2-myImage2->height()/2,ui->scrollArea->width()/2- myImage2->width()/2,ui->scrollArea->height()/2-myImage2->height()/2);
-            drawLabel->setPixmap(QPixmap::fromImage(*myImage2));
 
-            imageWidth=myImage2->width();
-            imageHeight=myImage2->height();
-           //myImage=*myImage2;
+            int scaleWidth=drawLabel->getMyImage().width()*0.8;
+            int scaleHeight=drawLabel->getMyImage().height()*0.8;
+            drawLabel->setImageWidth(scaleWidth);
+            drawLabel->setImageHeight(scaleHeight);
+            drawLabel->setImageByImage(&drawLabel->getMyImage().scaled(scaleWidth,scaleHeight,Qt::KeepAspectRatio));
+           // drawLabel->resize(scaleWidth,scaleHeight);
+            qDebug()<<"scaling decrease  now....................";
+            imageWidth=scaleWidth;
+            imageHeight=scaleHeight;
             hasTrans=false;
             picSizeCount-=1;
             ui->horizontalSlider->setValue(picSizeCount);
             picSliderCount=ui->horizontalSlider->value();
             qDebug()<<picSizeCount;
-        }
     }
+}
 
 }
+
 //水平滚动放大条
 void MainWindow::on_horizontalSlider_sliderMoved(int position)
 {
@@ -267,6 +291,41 @@ void MainWindow::on_horizontalSlider_sliderMoved(int position)
     }
 
 }
+
+//鼠标移事件
+void MainWindow::mouseMoveEvent(QMouseEvent *event){
+
+}
+
+//鼠标双击事件
+void MainWindow::mouseDoubleClickEvent(QMouseEvent *event){
+
+}
+
+//画笔点击事件
+void MainWindow::on_penButton_clicked()
+{
+    qDebug("width:%d,height:%d",this->width(),this->height());
+    if(ui->penButton->text()==QStringLiteral("画笔")){
+    drawLabel->isPen=true;
+    ui->pushButton->setEnabled(false);
+    ui->pushButton_2->setEnabled(false);
+    ui->horizontalSlider->setEnabled(false);
+    ui->imageRotate->setEnabled(false);
+        ui->penButton->setText(QStringLiteral("鼠标"));
+    }
+    else{
+        drawLabel->isPen=false;
+        ui->pushButton->setEnabled(true);
+        ui->pushButton_2->setEnabled(true);
+        ui->horizontalSlider->setEnabled(true);
+        ui->imageRotate->setEnabled(true);
+        myImage=drawLabel->getMyImage();
+        ui->penButton->setText(QStringLiteral("画笔"));
+    }
+
+}
+
 /*
 //事件过滤器
 bool MainWindow::eventFilter(QObject *obj,QEvent *event){
@@ -320,31 +379,6 @@ bool MainWindow::eventFilter(QObject *obj,QEvent *event){
 }
 
 */
-//鼠标移事件
-void MainWindow::mouseMoveEvent(QMouseEvent *event){
-
-}
-
-//鼠标双击事件
-void MainWindow::mouseDoubleClickEvent(QMouseEvent *event){
-
-}
-
-
-
-//画笔点击事件
-void MainWindow::on_penButton_clicked()
-{
-    if(ui->penButton->text()==QStringLiteral("画笔")){
-    drawLabel->isPen=true;
-        ui->penButton->setText(QStringLiteral("鼠标"));
-    }
-    else{
-        drawLabel->isPen=false;
-        ui->penButton->setText(QStringLiteral("画笔"));
-    }
-
-}
 
 
 

@@ -42,19 +42,25 @@
       <property name="autoFillBackground">
        <bool>true</bool>
       </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOn</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOn</enum>
+      </property>
       <property name="sizeAdjustPolicy">
-       <enum>QAbstractScrollArea::AdjustIgnored</enum>
+       <enum>QAbstractScrollArea::AdjustToContents</enum>
       </property>
       <property name="widgetResizable">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <widget class="QWidget" name="scrollAreaWidgetContents">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>1287</width>
-         <height>613</height>
+         <width>1270</width>
+         <height>596</height>
         </rect>
        </property>
       </widget>
@@ -202,7 +208,7 @@
       <widget class="QPushButton" name="penButton">
        <property name="geometry">
         <rect>
-         <x>20</x>
+         <x>330</x>
          <y>30</y>
          <width>75</width>
          <height>31</height>
@@ -211,36 +217,6 @@
        <property name="text">
         <string>画笔</string>
        </property>
-      </widget>
-      <widget class="QComboBox" name="penType">
-       <property name="geometry">
-        <rect>
-         <x>120</x>
-         <y>30</y>
-         <width>69</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <item>
-        <property name="text">
-         <string>直线</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>矩形</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>圆</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>自由绘制</string>
-        </property>
-       </item>
       </widget>
      </widget>
     </item>

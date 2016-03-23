@@ -24,9 +24,7 @@ private:
     Ui::MainWindow *ui;
     QPainter *painter;
     QImage   myImage;//图片
-
     QImage *myImage3; //保存原始图片
-    QLabel *labelWidget;//放置图片的label
     QString imageName;//图片路径
     QTransform transform; //图片旋转
     QMatrix matrix; //图片旋转角度
@@ -42,11 +40,11 @@ private:
     bool isPen;
     int picSizeCount; //放大、缩小倍数
     int picSliderCount; //滑块上一次的值
+    int initWidth;//图像初始高度
+    int initHeight;//图像初始宽度
 
     void drawPaint(); //绘制图形（测试版）
     void transformImage();// 调整图像位置 大小
-
-
 private slots:
     void on_actionOpen_triggered(); //菜单栏打开图片
     void on_imageRotate_sliderMoved(int position);//旋转图片

@@ -9,10 +9,17 @@
 myLabel::myLabel(QLabel *parent) : QLabel(parent)
 {
     myPainter=new QPainter;
+    linePainter=new QPainter;
+    showPicPainter=new QPainter;
     isClicking=false;
     isPen=false;
-
-
+    isLoadPic=false;
+}
+myLabel::~myLabel()
+{
+    delete myPainter;
+    delete linePainter;
+    delete showPicPainter;
 }
 
 void myLabel::mousePressEvent(QMouseEvent *event)
@@ -24,7 +31,6 @@ void myLabel::mousePressEvent(QMouseEvent *event)
     if(this->isPen){
         beginPointer.setX(mouseEvent->pos().x());
         beginPointer.setY(mouseEvent->pos().y());
-        qDebug("clicked position is :,%d,%d",beginPointer.x(),beginPointer.y());
     }
 }
 
@@ -35,36 +41,30 @@ void myLabel::mouseMoveEvent(QMouseEvent *event)
     this->currentPoint.setX(mouseEvent->pos().x());
     this->currentPoint.setY(mouseEvent->pos().y());
     if(!this->isPen){
-
         this->setGeometry(mouseEvent->pos().x()-beginPoint.x()+this->pos().x(),mouseEvent->pos().y()-beginPoint.y()+this->pos().y(),this->width(),this->height());
-
     }
     else if(this->isPen){
-        //绘制直线
-        if(1)
-        {
             straightLine[0]=QPointF(beginPointer.x(),beginPointer.y());
             straightLine[1]=QPointF(currentPoint.x(),currentPoint.y());
-            beginPoint.setX( mouseEvent->x());
-            beginPoint.setY(mouseEvent->y());
-            QPainter linePainter(&myImage);
+            pointArray.append(QPointF(beginPointer.x(),beginPointer.y()));
+            pointArray.append(QPointF(currentPoint.x(),currentPoint.y()));
+            linePainter->begin(&myImage);
             QPen pen(Qt::blue);
-            QBrush brush1(Qt::red,Qt::Dense3Pattern);  //用指定的颜色和模式绘制图形
+            QBrush brush1(Qt::green,Qt::Dense3Pattern);  //用指定的颜色和模式绘制图形
             pen.setBrush(brush1);
-            pen.setWidth(8);
+            pen.setWidth(2);
             pen.setCapStyle(Qt::RoundCap); //设置线的末端的风格 共三种
             pen.setJoinStyle(Qt::RoundJoin);//设置坐标与连接线之间的风格
-            linePainter.setPen(pen);
-            QLineF myLine(straightLine[0],straightLine[1]);
-            linePainter.drawImage(0,0,myImage);
-
-        }
-       // pointArray.append(QPointF(beginPointer.x(),beginPointer.y()));
-       // pointArray.append(QPointF(currentPoint.x(),currentPoint.y()));
-        update();
+            linePainter->setPen(pen);
+            QPainterPath path;
+            path.moveTo(beginPointer.x(),beginPointer.y());
+            path.lineTo(currentPoint.x(),currentPoint.y());
+            linePainter->drawPath(path);
+            linePainter->end();
+            beginPointer.setX( mouseEvent->x());
+            beginPointer.setY(mouseEvent->y());
+            update();
     }
-
-
 }
 
 void myLabel::mouseReleaseEvent(QMouseEvent *event)
@@ -72,40 +72,15 @@ void myLabel::mouseReleaseEvent(QMouseEvent *event)
     if(this->isPen){
         pointArray.append(QPointF(beginPointer.x(),beginPointer.y()));
         pointArray.append(QPointF(currentPoint.x(),currentPoint.y()));
-        update();
-
     }
-
 }
 
 //重写label方法
 void myLabel::paintEvent(QPaintEvent *event)
 {
-
-if(this->isPen){
-    myPainter->begin(this);
-    myPainter->drawImage(0,0,myImage);
-    QLineF myLine(straightLine[0],straightLine[1]);
-    myPainter->drawLine(myLine);
-
-/*
-    if(1){
-        QLineF myLine(straightLine[0],straightLine[1]);
-        myPainter->drawLine(myLine);
-    }
-    else{
-        for(int i=0;i<pointArray.size()-1;i+=2){
-            QLineF myLine(pointArray[i],pointArray[i+1]);
-            myPainter->drawLine(myLine);
-        }
-
-    }
-    */
-    myPainter->end();
-    qDebug()<<"reDrawing------------------------------------------";
-}
-
-
+    showPicPainter->begin(this);
+    showPicPainter->drawImage(0,0,myImage);
+    showPicPainter->end();
 }
 
 //获取图片路径
@@ -113,7 +88,44 @@ if(this->isPen){
  {
      this->imageName=name;
      myImage.load(imageName);
+     isLoadPic=true;
+     update();
+ }
+ //返回画笔编辑的图片
+ QImage myLabel::getMyImage()
+{
+     return myImage;
+}
+//设置图片
+ void myLabel::setImageByImage(QImage *image)
+ {
+     myImage=*image;
+     update();
+ }
+ //设置图片高度
+ void myLabel::setImageWidth(int width)
+ {
+     myImage.size().setWidth(width);
+ }
+//设置图片宽度
+ void myLabel::setImageHeight(int height)
+ {
+     myImage.size().setHeight(height);
 
  }
+//设置旋转角度
+ void myLabel::setImageRotate(QMatrix matrix)
+{
+     myMatrix=matrix;
+     QMatrix matrix2;
+     matrix2.rotate(90);
+     myImage.transformed(matrix2);
+     showPicPainter->begin(this);
+     showPicPainter->translate(50,50);
+     showPicPainter->rotate(90);
+     showPicPainter->drawImage(0,0,myImage);
+     update();
+
+}
 
 
