@@ -29,4 +29,5 @@ RESOURCES += \
     images.qrc
 
 DISTFILES += \
-    FBT.png
+    FBT.png \
+    ../../../Documents/imageGrapAssistant/x-y.png

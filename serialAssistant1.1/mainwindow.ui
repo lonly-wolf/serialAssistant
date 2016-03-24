@@ -524,7 +524,7 @@ p, li { white-space: pre-wrap; }
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="images.qrc">:/FBT2.png</pixmap>
+          <pixmap>:/FBT2.png</pixmap>
          </property>
         </widget>
        </item>
@@ -604,8 +604,6 @@ p, li { white-space: pre-wrap; }
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="images.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
